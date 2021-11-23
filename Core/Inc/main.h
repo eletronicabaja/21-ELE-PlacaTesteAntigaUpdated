@@ -63,7 +63,7 @@ void Error_Handler(void);
 #define SD_CS_Pin GPIO_PIN_15
 #define SD_CS_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
-
+#define LDEBUG HAL_GPIO_TogglePin(LEDB_GPIO_Port, LEDB_Pin);
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

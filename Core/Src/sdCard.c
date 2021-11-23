@@ -29,7 +29,7 @@ FRESULT SD_Init(void)
 	if (fresult != FR_OK)
 		return fresult;
 
-	len = sprintf(sdCard.buffer,"9999999999999999999999\n");
+	len = sprintf(sdCard.buffer,"\n");
 	fresult = f_write(&sdCard.fil, sdCard.buffer, len, &sdCard.bw);
 	if (fresult != FR_OK)
 		return fresult;
@@ -98,13 +98,8 @@ FRESULT SD_logger(void)
 		sdCard.counter = 0;
 
 	sdCard.blen = sprintf(sdCard.buffer,
-			"%04d%04d"
-			"%04d%04d"
-			"%06d"
-			"\r\n",
-			can_rData.rpm, can_rData.vel,
-			can_rData.fuel,can_rData.bateria,
-			can_rData.counter);
+			"\n"
+			);
 
 	for (int i = 0; i < sdCard.blen; i++)
 		sdCard.longBuffer[i+sdCard.blenLong] = sdCard.buffer[i];
