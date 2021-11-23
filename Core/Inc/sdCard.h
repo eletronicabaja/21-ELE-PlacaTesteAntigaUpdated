@@ -11,36 +11,35 @@
 #include "string.h"
 #include "stdio.h"
 
-#define SD_BUFFSIZE	(4*7 + 2)
-#define SD_BUFFSIZE_LONG 2
-#define SD_TASK_HZ 100 //Frequencia da task do SD
+#define SD_BUFFSIZE	32
+#define SD_BUFFSIZE_LONG 10
 
-#define LDEBUG HAL_GPIO_TogglePin(LEDB_GPIO_Port, LEDB_Pin)
+typedef struct
+{
+	FATFS fs;
+	FIL fil;
+	int blen;
+	int blenLong;
+	char buffer[SD_BUFFSIZE];
+	char longBuffer[(SD_BUFFSIZE_LONG*SD_BUFFSIZE)];
+	char filname[12];
+	uint16_t counter;
+	uint16_t timer;
+	BYTE longCounter;
+	UINT br, bw;
+}SD_CARD_typedef;
 
-TaskHandle_t SD_Task_Handler;
+TIM_HandleTypeDef htim2;
 
-FATFS fs;
-FIL fil;
 FRESULT fresult;
-char sdBuffer[SD_BUFFSIZE];
-char sdLongBuffer[(SD_BUFFSIZE_LONG*SD_BUFFSIZE)];
-char filname[12];
-BYTE bufLongCounter;
-uint16_t sdCounter;
+SD_CARD_typedef sdCard;
 
-UINT br, bw;
-
+int bufsize(char *buf);
 void bufclear(void);
 
 FRESULT SD_Init(void);
 FRESULT SD_createFile(void);
 FRESULT SD_write(int bsize, char wBuf[bsize]);
 FRESULT SD_logger(void);
-
-extern int motorRPM, velocidade;
-extern int irTemp[2];
-extern uint16_t adcBuf[];
-
-void SD_Task();
 
 #endif /* INC_SDCARD_H_ */

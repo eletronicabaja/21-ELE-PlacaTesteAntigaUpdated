@@ -15,12 +15,13 @@ int bufsize(char *buf)
 void bufclear(void)
 {
 	for (int i=0; i<SD_BUFFSIZE; i++)
-		sdBuffer[i] = '\0';
+		sdCard.buffer[i] = '\0';
 }
 
 FRESULT SD_Init(void)
 {
-	fresult = f_mount(&fs, "", 0);
+	int len;
+	fresult = f_mount(&sdCard.fs, "", 0);
 	if (fresult != FR_OK)
 		return fresult;
 
@@ -28,22 +29,25 @@ FRESULT SD_Init(void)
 	if (fresult != FR_OK)
 		return fresult;
 
-	strcpy(sdBuffer,"9999999999999999999999999999\n");
-	fresult = f_write(&fil, sdBuffer, bufsize(sdBuffer), &bw);
+	len = sprintf(sdCard.buffer,"9999999999999999999999\n");
+	fresult = f_write(&sdCard.fil, sdCard.buffer, len, &sdCard.bw);
 	if (fresult != FR_OK)
 		return fresult;
 
-	fresult = f_close(&fil);
+	fresult = f_close(&sdCard.fil);
 	if (fresult != FR_OK)
 		return fresult;
 
 	bufclear();
 
 	LDEBUG;
-	bufLongCounter = 0;
-	sdCounter = 0;
+	sdCard.longCounter = 0;
+	sdCard.blen = 0;
+	sdCard.blenLong = 0;
+	sdCard.counter = 0;
+	sdCard.timer = 0;
 
-	xTaskCreate(SD_Task, "SD", 128, NULL, 6, &SD_Task_Handler);
+	HAL_TIM_Base_Start_IT(&htim2);
 
 	return fresult;
 }
@@ -54,8 +58,8 @@ FRESULT SD_createFile(void)
 
 	do
 	{
-		sprintf(filname,"file%.3d.txt",filnum);
-		fresult = f_open(&fil, filname, FA_CREATE_NEW | FA_WRITE);
+		sprintf(sdCard.filname,"file%.3d.txt",filnum);
+		fresult = f_open(&sdCard.fil, sdCard.filname, FA_CREATE_NEW | FA_WRITE);
 		filnum++;
 		LDEBUG;
 	}while(fresult == FR_EXIST);
@@ -65,65 +69,56 @@ FRESULT SD_createFile(void)
 
 FRESULT SD_write(int bsize, char wBuf[bsize])
 {
-	fresult = f_open(&fil, filname, FA_OPEN_EXISTING | FA_WRITE);
+	fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_EXISTING | FA_WRITE);
 	if (fresult != FR_OK)
 		return fresult;
 
-	fresult = f_lseek(&fil, fil.fsize);
+	fresult = f_lseek(&sdCard.fil, sdCard.fil.fsize);
 	if (fresult != FR_OK)
 		return fresult;
 
-	fresult = f_write(&fil, wBuf, bsize, &bw);
+	fresult = f_write(&sdCard.fil, wBuf, bsize, &sdCard.bw);
 	if (fresult != FR_OK)
 		return fresult;
 
-	fresult = f_close(&fil);
+	fresult = f_close(&sdCard.fil);
 	if (fresult != FR_OK)
 		return fresult;
 
 	LDEBUG;
+
 	return fresult;
 }
 
 FRESULT SD_logger(void)
 {
-
-	if (sdCounter <= 9999)
-		sdCounter++;
+	if (sdCard.counter < 9999)
+		sdCard.counter++;
 	else
-		sdCounter = 0;
+		sdCard.counter = 0;
 
-	sprintf(sdBuffer,"%04d%04d%04d%04d%04d%04d%04d\n", sdCounter,
-			motorRPM,velocidade,
-			adcBuf[0],adcBuf[1],
-			irTemp[0],irTemp[1]);
+	sdCard.blen = sprintf(sdCard.buffer,
+			"%04d%04d"
+			"%04d%04d"
+			"%06d"
+			"\r\n",
+			can_rData.rpm, can_rData.vel,
+			can_rData.fuel,can_rData.bateria,
+			can_rData.counter);
 
-	int blen = bufsize(sdBuffer);
-	for (int i = 0; i < blen; i++)
-		sdLongBuffer[i+(blen*bufLongCounter)] = sdBuffer[i];
-	bufLongCounter++;
+	for (int i = 0; i < sdCard.blen; i++)
+		sdCard.longBuffer[i+sdCard.blenLong] = sdCard.buffer[i];
+	sdCard.longCounter++;
+	sdCard.blenLong += sdCard.blen;
 
-	if (bufLongCounter >= SD_BUFFSIZE_LONG)
+	if (sdCard.longCounter >= SD_BUFFSIZE_LONG)
 	{
-		fresult = SD_write(blen*SD_BUFFSIZE_LONG, sdLongBuffer);
-		bufLongCounter = 0;
+		fresult = SD_write(sdCard.blenLong, sdCard.longBuffer);
+		sdCard.longCounter = 0;
+		sdCard.blenLong = 0;
 	}
 
-	LDEBUG;
+	//LDEBUG;
 
 	return fresult;
-}
-
-void SD_Task()
-{
-	uint32_t TicksDelay = pdMS_TO_TICKS(1000/SD_TASK_HZ);
-
-	while (1)
-	{
-		fresult = SD_logger();
-		if (fresult != FR_OK)
-			__NOP();
-
-		vTaskDelay(TicksDelay);
-	}
 }
