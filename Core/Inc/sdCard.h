@@ -27,6 +27,8 @@ typedef struct
 	uint16_t timer;
 	BYTE longCounter;
 	UINT br, bw;
+
+	uint16_t setting;
 }SD_CARD_typedef;
 
 TIM_HandleTypeDef htim2;
@@ -38,6 +40,7 @@ int bufsize(char *buf);
 void bufclear(void);
 
 FRESULT SD_Init(void);
+FRESULT SD_loadSettings(void);
 FRESULT SD_createFile(void);
 FRESULT SD_write(int bsize, char wBuf[bsize]);
 FRESULT SD_logger(void);

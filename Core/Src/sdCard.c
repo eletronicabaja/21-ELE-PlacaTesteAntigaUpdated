@@ -20,21 +20,16 @@ void bufclear(void)
 
 FRESULT SD_Init(void)
 {
-	int len;
 	fresult = f_mount(&sdCard.fs, "", 0);
 	if (fresult != FR_OK)
 		return fresult;
 
+	fresult = SD_loadSettings();
+	if (fresult != FR_OK)
+		return fresult;
+
+
 	fresult = SD_createFile();
-	if (fresult != FR_OK)
-		return fresult;
-
-	len = sprintf(sdCard.buffer,"\n");
-	fresult = f_write(&sdCard.fil, sdCard.buffer, len, &sdCard.bw);
-	if (fresult != FR_OK)
-		return fresult;
-
-	fresult = f_close(&sdCard.fil);
 	if (fresult != FR_OK)
 		return fresult;
 
@@ -52,8 +47,46 @@ FRESULT SD_Init(void)
 	return fresult;
 }
 
+FRESULT SD_loadSettings(void)
+{
+	int len;
+
+	sprintf(sdCard.filname,"settings.ini");
+	fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_EXISTING | FA_READ);
+
+	if (fresult == FR_NO_FILE)
+	{
+		fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_ALWAYS | FA_WRITE);
+		if (fresult != FR_OK)
+			return fresult;
+
+		len = sprintf(sdCard.buffer,"MODE=0\n");
+		fresult = f_write(&sdCard.fil, sdCard.buffer, len, &sdCard.bw);
+		if (fresult != FR_OK)
+			return fresult;
+
+		fresult = f_close(&sdCard.fil);
+		if (fresult != FR_OK)
+			return fresult;
+	}
+	else if (fresult == FR_OK)
+	{
+		fresult = f_read(&sdCard.fil, sdCard.longBuffer, SD_BUFFSIZE_LONG*SD_BUFFSIZE-1, &sdCard.br);
+		if (fresult != FR_OK)
+			return fresult;
+
+		char setting[16];
+
+
+	}
+
+	return fresult;
+}
+
 FRESULT SD_createFile(void)
 {
+	int len;
+
 	int filnum = 0;
 
 	do
@@ -62,7 +95,17 @@ FRESULT SD_createFile(void)
 		fresult = f_open(&sdCard.fil, sdCard.filname, FA_CREATE_NEW | FA_WRITE);
 		filnum++;
 		LDEBUG;
-	}while(fresult == FR_EXIST);
+	}
+	while(fresult == FR_EXIST);
+
+	len = sprintf(sdCard.buffer,"\n");
+	fresult = f_write(&sdCard.fil, sdCard.buffer, len, &sdCard.bw);
+	if (fresult != FR_OK)
+		return fresult;
+
+	fresult = f_close(&sdCard.fil);
+	if (fresult != FR_OK)
+		return fresult;
 
 	return fresult;
 }
