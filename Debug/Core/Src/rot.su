@@ -1,0 +1,3 @@
+rot.c:10:6:rot_Init	8	static
+rot.c:19:6:rot_Reset	8	static
+rot.c:24:6:rot_Calc	8	static

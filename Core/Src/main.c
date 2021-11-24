@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "sdCard.h"
+#include "indutivo.h"
+#include "rot.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -120,6 +122,16 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   fresult = SD_Init();
+
+  if (sdCard.mode == 0)
+  {
+
+  }
+  else if (sdCard.mode == 1)
+  {
+	  rot_Init();
+  }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
