@@ -68,6 +68,8 @@ FRESULT SD_createSettings(void)
 {
 	int len;
 
+	fresult = f_close(&sdCard.fil);
+
 	fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_ALWAYS | FA_WRITE);
 	if (fresult != FR_OK)
 		return fresult;
@@ -100,6 +102,12 @@ FRESULT SD_searchSettings(void)
 
 	for (index; sdCard.longBuffer[index] != '='; index++);
 
+	if (index >= SD_BUFFSIZE_LONG*SD_BUFFSIZE-2)
+	{
+		fresult = SD_createSettings();
+		return fresult;
+	}
+
 	for (deindex; sdCard.longBuffer[index-deindex] >= 65 && sdCard.longBuffer[index-deindex] <= 90; deindex++);
 	deindex--;
 
@@ -110,8 +118,13 @@ FRESULT SD_searchSettings(void)
 
 	if (sdCard.setting[0] == 'M' && sdCard.setting[1] == 'O' && sdCard.setting[2] == 'D' && sdCard.setting[3] == 'E')
 	{
-		sdCard.mode = sdCard.setting[5] - 48;
+		if (sdCard.setting[5] >= 48 && sdCard.setting[5] <= 57)
+			sdCard.mode = sdCard.setting[5] - 48;
+		else
+			fresult = SD_createSettings();
 	}
+	else
+		fresult = SD_createSettings();
 
 	return fresult;
 }
