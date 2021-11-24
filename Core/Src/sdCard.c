@@ -49,35 +49,68 @@ FRESULT SD_Init(void)
 
 FRESULT SD_loadSettings(void)
 {
-	int len;
-
 	sprintf(sdCard.filname,"settings.ini");
 	fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_EXISTING | FA_READ);
 
 	if (fresult == FR_NO_FILE)
 	{
-		fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_ALWAYS | FA_WRITE);
-		if (fresult != FR_OK)
-			return fresult;
-
-		len = sprintf(sdCard.buffer,"MODE=0\n");
-		fresult = f_write(&sdCard.fil, sdCard.buffer, len, &sdCard.bw);
-		if (fresult != FR_OK)
-			return fresult;
-
-		fresult = f_close(&sdCard.fil);
-		if (fresult != FR_OK)
-			return fresult;
+		fresult = SD_createSettings();
 	}
 	else if (fresult == FR_OK)
 	{
-		fresult = f_read(&sdCard.fil, sdCard.longBuffer, SD_BUFFSIZE_LONG*SD_BUFFSIZE-1, &sdCard.br);
-		if (fresult != FR_OK)
-			return fresult;
+		fresult = SD_searchSettings();
+	}
 
-		char setting[16];
+	return fresult;
+}
 
+FRESULT SD_createSettings(void)
+{
+	int len;
 
+	fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_ALWAYS | FA_WRITE);
+	if (fresult != FR_OK)
+		return fresult;
+
+	len = sprintf(sdCard.longBuffer,
+			";Seleciona o Modo de operação da Placa\n"
+			"MODE=0\n");
+
+	fresult = f_write(&sdCard.fil, sdCard.longBuffer, len, &sdCard.bw);
+	if (fresult != FR_OK)
+		return fresult;
+
+	fresult = f_close(&sdCard.fil);
+	if (fresult != FR_OK)
+		return fresult;
+
+	sdCard.mode = 0;
+
+	return fresult;
+}
+
+FRESULT SD_searchSettings(void)
+{
+	int index = 0;
+	int deindex = 1;
+
+	fresult = f_read(&sdCard.fil, sdCard.longBuffer, SD_BUFFSIZE_LONG*SD_BUFFSIZE-1, &sdCard.br);
+	if (fresult != FR_OK)
+		return fresult;
+
+	for (index; sdCard.longBuffer[index] != '='; index++);
+
+	for (deindex; sdCard.longBuffer[index-deindex] >= 65 && sdCard.longBuffer[index-deindex] <= 90; deindex++);
+	deindex--;
+
+	for (int i = 0; i < deindex+2; i++)
+	{
+		sdCard.setting[i] = sdCard.longBuffer[index - deindex + i];
+	}
+
+	if (sdCard.setting[0] == 'M' && sdCard.setting[1] == 'O' && sdCard.setting[2] == 'D' && sdCard.setting[3] == 'E')
+	{
+		sdCard.mode = sdCard.setting[5] - 48;
 	}
 
 	return fresult;
