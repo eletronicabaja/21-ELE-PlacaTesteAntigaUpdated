@@ -7,6 +7,9 @@
 
 #include "indutivo.h"
 
+/*
+ * 	Função para iniciar a leitura
+ */
 HAL_StatusTypeDef indutivo_Init(indutivo_typedef *hindutivo)
 {
 	HAL_StatusTypeDef result;
@@ -21,6 +24,9 @@ HAL_StatusTypeDef indutivo_Init(indutivo_typedef *hindutivo)
 	return result;
 }
 
+/*
+ * 	Função para o filtro de dados, calcula o value
+ */
 void indutivo_filtro(indutivo_typedef *hindutivo)
 {
 	hindutivo->value = 0;
@@ -39,6 +45,10 @@ void indutivo_filtro(indutivo_typedef *hindutivo)
 	hindutivo->value = (int)hindutivo->value/5.0;
 }
 
+/*
+ * 	Função pra ser chamada quando ocorre a interrupção de sinal
+ * 	Calcula o value_raw
+ */
 void indutivo_calc(indutivo_typedef *hindutivo)
 {
 	hindutivo->count += __HAL_TIM_GET_COMPARE(hindutivo->htim, hindutivo->channel);
@@ -49,6 +59,10 @@ void indutivo_calc(indutivo_typedef *hindutivo)
 	hindutivo->count = 0;
 }
 
+/*
+ * 	Função pra ser chamada quando o timer atinge valor maximo
+ * 	Zera os valores
+ */
 void indutivo_reset(indutivo_typedef *hindutivo)
 {
 	if(hindutivo->count<1000000)
