@@ -19,15 +19,15 @@
 
 	-Inicializar na main.c:
 
-		void rot_Init(void);
+		rot_Init(void);
 
 	-Chamar na interrupção de update do timer:
 
-		void rot_Reset(void);
+		rot_Reset(void);
 
 	-Chamar na interrupção de leitura do canal do timer:
 
-		void rot_Calc(void);
+		rot_Calc(void);
 
  */
 

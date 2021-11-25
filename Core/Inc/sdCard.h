@@ -1,4 +1,25 @@
 /*
+ * sdCard.h
+ *
+ *  Created on: 24 de nov de 2021
+ *      Author: SOPA_
+ */
+
+/*
+	==HEADER PARA APLICAÇÃO DO SD (Módulo Antigo)==
+
+	Arquivos que acompanham:
+	-sdCard.c
+
+	INSTRUÇÕES:
+
+	-Inicializar na main.c:
+
+		SD_Init(void);
+
+	-Chamar para salvar os dados:
+
+		SD_logger(void);
 
  */
 
@@ -11,31 +32,36 @@
 #include "string.h"
 #include "stdio.h"
 
+/*
+ * 	MACROS QUE DEFINEM O TAMANHO DO BUFFER
+ */
 #define SD_BUFFSIZE	32
 #define SD_BUFFSIZE_LONG 10
 
+/*
+ * 	Cria Handler do SDCard
+ */
 typedef struct
 {
-	FATFS fs;
-	FIL fil;
-	int blen;
-	int blenLong;
-	char buffer[SD_BUFFSIZE];
-	char longBuffer[(SD_BUFFSIZE_LONG*SD_BUFFSIZE)];
-	char filname[12];
-	uint16_t counter;
-	uint16_t timer;
-	BYTE longCounter;
-	UINT br, bw;
-
-	char setting[16];
-	uint16_t mode;
+	FATFS fs;										/* < ID do Hardware do cartão SD */
+	FIL fil;										/* < ID do arquivo que está sendo manipulado */
+	int blen;										/* < Quantidade de chars que são salvos no buffer */
+	int blenLong;									/* < Quantidade de chars que são salvos no longBuffer */
+	char buffer[SD_BUFFSIZE];						/* < buffer para os dados */
+	char longBuffer[(SD_BUFFSIZE_LONG*SD_BUFFSIZE)];/* < Buffer grande que opera diretamente o arquivo */
+	char filname[16];								/* < String que salva o nome do arquivo sendo operado */
+	uint16_t counter;								/* < Contador, conta o numero de salvamentos no buffer */
+	uint16_t timer;									/* < Timer para salvar o tempo em segundos, usado como variavel de controle para calcular a frequencia */
+	BYTE longCounter;								/* < Variavel de controle, faz contagem de quantos buffers foram salvos dentro do longBuffer */
+	UINT br, bw;									/* < Variaveis de controle de escrita e leitura */
+	char setting[16];								/* < Variavel que salva as configuração lidas no settings.ini */
+	uint16_t mode;									/* < Variavel que salva o modo de operação da placa configurado no settings.ini */
 }SD_CARD_typedef;
 
 TIM_HandleTypeDef htim4;
 
-FRESULT fresult;
-SD_CARD_typedef sdCard;
+FRESULT fresult;			/* < Variavel de debug */
+SD_CARD_typedef sdCard;		/* < Declara variavel do sdCard */
 
 int bufsize(char *buf);
 void bufclear(void);

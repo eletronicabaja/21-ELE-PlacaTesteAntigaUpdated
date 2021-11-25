@@ -7,6 +7,9 @@
 #include "rot.h"
 #include "forceGauge.h"
 
+/*
+ * 	Função para calcular tamanho de um buffer
+ */
 int bufsize(char *buf)
 {
 	int i = 0;
@@ -15,12 +18,18 @@ int bufsize(char *buf)
 	return i;
 }
 
-void bufclear(void)
+/*
+ * 	Função para limpar um buffer
+ */
+void bufclear(char *buf)
 {
-	for (int i=0; i<SD_BUFFSIZE; i++)
-		sdCard.buffer[i] = '\0';
+	for (int i=0; i<bufsize(buf); i++)
+		buf->buffer[i] = '\0';
 }
 
+/*
+ * 	Inicialização do cartão sd
+ */
 FRESULT SD_Init(void)
 {
 	fresult = f_mount(&sdCard.fs, "", 0);
@@ -36,7 +45,7 @@ FRESULT SD_Init(void)
 	if (fresult != FR_OK)
 		return fresult;
 
-	bufclear();
+	bufclear(sdCard.buffer);
 
 	LDEBUG;
 	sdCard.longCounter = 0;
@@ -50,6 +59,9 @@ FRESULT SD_Init(void)
 	return fresult;
 }
 
+/*
+ * 	Função para ler o settings.ini
+ */
 FRESULT SD_loadSettings(void)
 {
 	sprintf(sdCard.filname,"settings.ini");
@@ -67,6 +79,9 @@ FRESULT SD_loadSettings(void)
 	return fresult;
 }
 
+/*
+ * 	Função para criar o settings.ini quando não disponivel
+ */
 FRESULT SD_createSettings(void)
 {
 	int len;
@@ -94,6 +109,9 @@ FRESULT SD_createSettings(void)
 	return fresult;
 }
 
+/*
+ * 	Função que lê o conteudo do settings.ini
+ */
 FRESULT SD_searchSettings(void)
 {
 	int index = 0;
@@ -132,6 +150,9 @@ FRESULT SD_searchSettings(void)
 	return fresult;
 }
 
+/*
+ * 	Função que cria o fileXXX.txt
+ */
 FRESULT SD_createFile(void)
 {
 	int len;
@@ -159,6 +180,9 @@ FRESULT SD_createFile(void)
 	return fresult;
 }
 
+/*
+ * 	Função que escreve em um arquivo
+ */
 FRESULT SD_write(int bsize, char wBuf[bsize])
 {
 	fresult = f_open(&sdCard.fil, sdCard.filname, FA_OPEN_EXISTING | FA_WRITE);
@@ -182,6 +206,9 @@ FRESULT SD_write(int bsize, char wBuf[bsize])
 	return fresult;
 }
 
+/*
+ * 	Função de datalogger
+ */
 FRESULT SD_logger(void)
 {
 	if (sdCard.counter < 9999)
