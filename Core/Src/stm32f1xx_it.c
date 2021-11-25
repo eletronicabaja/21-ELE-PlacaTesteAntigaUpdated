@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include  "rot.h"
+#include "forceGauge.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

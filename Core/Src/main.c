@@ -26,6 +26,7 @@
 #include "sdCard.h"
 #include "indutivo.h"
 #include "rot.h"
+#include "forceGauge.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,7 +60,7 @@ UART_HandleTypeDef huart2;
 DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
-uint8_t fGaugeBuf[16];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -131,7 +132,7 @@ int main(void)
   else if (sdCard.mode == 1)
   {
 	  rot_Init();
-	  HAL_UART_Receive_DMA(&huart2, fGaugeBuf, 16);
+	  forceGauge_uart_Init_DMA(&huart2);
   }
 
   /* USER CODE END 2 */
@@ -140,6 +141,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  forceGauge_getForce();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
