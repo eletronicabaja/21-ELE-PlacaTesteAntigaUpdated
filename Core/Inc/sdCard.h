@@ -32,7 +32,7 @@ typedef struct
 	uint16_t mode;
 }SD_CARD_typedef;
 
-TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim4;
 
 FRESULT fresult;
 SD_CARD_typedef sdCard;

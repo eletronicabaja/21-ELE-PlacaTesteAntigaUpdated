@@ -4,6 +4,9 @@
 
 #include "sdCard.h"
 
+#include "rot.h"
+#include "forceGauge.h"
+
 int bufsize(char *buf)
 {
 	int i = 0;
@@ -42,7 +45,7 @@ FRESULT SD_Init(void)
 	sdCard.counter = 0;
 	sdCard.timer = 0;
 
-	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start_IT(&htim4);
 
 	return fresult;
 }
@@ -186,9 +189,20 @@ FRESULT SD_logger(void)
 	else
 		sdCard.counter = 0;
 
-	sdCard.blen = sprintf(sdCard.buffer,
-			"\n"
-			);
+	switch (sdCard.mode)
+	{
+	case 0:
+			sdCard.blen = sprintf(sdCard.buffer,
+					"\n"
+					);
+	case 1:
+			sdCard.blen = sprintf(sdCard.buffer,
+					"%04d%04d"
+					"%04d"
+					"\n",
+					rot.value, forceGauge.force,
+					sdCard.counter);
+	}
 
 	for (int i = 0; i < sdCard.blen; i++)
 		sdCard.longBuffer[i+sdCard.blenLong] = sdCard.buffer[i];
