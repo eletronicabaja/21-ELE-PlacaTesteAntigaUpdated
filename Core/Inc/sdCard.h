@@ -64,7 +64,7 @@ FRESULT fresult;			/* < Variavel de debug */
 SD_CARD_typedef sdCard;		/* < Declara variavel do sdCard */
 
 int bufsize(char *buf);
-void bufclear(void);
+void bufclear(SD_CARD_typedef *buf);
 
 FRESULT SD_Init(void);
 FRESULT SD_createSettings(void);

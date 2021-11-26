@@ -5,6 +5,7 @@
 #include "sdCard.h"
 
 #include "rot.h"
+#include "vel.h"
 #include "forceGauge.h"
 
 /*
@@ -21,9 +22,9 @@ int bufsize(char *buf)
 /*
  * 	Função para limpar um buffer
  */
-void bufclear(char *buf)
+void bufclear(SD_CARD_typedef *buf)
 {
-	for (int i=0; i<bufsize(buf); i++)
+	for (int i=0; i<bufsize(buf->buffer); i++)
 		buf->buffer[i] = '\0';
 }
 
@@ -222,8 +223,11 @@ FRESULT SD_logger(void)
 	{
 	case 0:
 			sdCard.blen = sprintf(sdCard.buffer,
-					"\n"
-					);
+					"%04d%04d"
+					"%04d"
+					"\n",
+					rot.value, vel.value,
+					sdCard.counter);
 	case 1:
 			sdCard.blen = sprintf(sdCard.buffer,
 					"%04d%04d"

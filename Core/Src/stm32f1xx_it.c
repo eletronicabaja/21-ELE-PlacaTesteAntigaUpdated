@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include  "rot.h"
+#include "vel.h"
 #include "forceGauge.h"
 #include "sdCard.h"
 /* USER CODE END Includes */
@@ -258,7 +259,8 @@ void DMA1_Channel6_IRQHandler(void)
 void TIM1_UP_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_IRQn 0 */
-	rot_Reset();
+	if (__HAL_TIM_GET_FLAG(&htim1,TIM_FLAG_UPDATE) != RESET)
+		rot_Reset();
   /* USER CODE END TIM1_UP_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_IRQn 1 */
@@ -272,7 +274,7 @@ void TIM1_UP_IRQHandler(void)
 void TIM1_CC_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_CC_IRQn 0 */
-	if (htim1.Instance->CCR2 != RESET)
+	if (__HAL_TIM_GET_FLAG(&htim1,TIM_FLAG_CC2) != RESET)
 		rot_Calc();
   /* USER CODE END TIM1_CC_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
@@ -287,7 +289,10 @@ void TIM1_CC_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-
+	if (__HAL_TIM_GET_FLAG(&htim2,TIM_FLAG_CC1) != RESET)
+		vel_Calc();
+	if (__HAL_TIM_GET_FLAG(&htim2,TIM_FLAG_UPDATE) != RESET)
+		vel_Reset();
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */

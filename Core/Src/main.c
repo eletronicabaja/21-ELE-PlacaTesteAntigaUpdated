@@ -27,6 +27,7 @@
 #include "indutivo.h"
 #include "rot.h"
 #include "forceGauge.h"
+#include "vel.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -127,7 +128,8 @@ int main(void)
 
   if (sdCard.mode == 0)
   {
-
+	  rot_Init();
+	  vel_Init();
   }
   else if (sdCard.mode == 1)
   {

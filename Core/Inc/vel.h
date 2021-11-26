@@ -1,15 +1,15 @@
 /*
- * rot.h
+ * vel.h
  *
- *  Created on: 24 de nov de 2021
+ *  Created on: 26 de nov de 2021
  *      Author: SOPA_
  */
 
 /*
-	==HEADER PARA APLICAÇÃO DO SENSOR DE ROTAÇÃO==
+	==HEADER PARA APLICAÇÃO DO SENSOR DE VELOCIDADE==
 
 	Arquivos que acompanham:
-	-rot.c
+	-vel.c
 
 	Arquivos necessarios:
 	-indutivo.h
@@ -19,31 +19,31 @@
 
 	-Inicializar na main.c:
 
-		rot_Init(void);
+		vel_Init(void);
 
 	-Chamar na interrupção de update do timer:
 
 		if (__HAL_TIM_GET_FLAG(&htimx,TIM_FLAG_UPDATE) != RESET)
-			rot_Reset();
+			vel_Reset();
 
 	-Chamar na interrupção de leitura do canal do timer:
 
 		if (__HAL_TIM_GET_FLAG(&htimx,TIM_FLAG_CCx) != RESET)
-			rot_Calc();
+			vel_Calc();
 
  */
 
-#ifndef INC_ROT_H_
-#define INC_ROT_H_
+#ifndef INC_VEL_H_
+#define INC_VEL_H_
 
 #include "indutivo.h"
 
-TIM_HandleTypeDef htim1;	/* < Declara timer que será utilizado */
+TIM_HandleTypeDef htim2;	/* < Declara timer que será utilizado */
 
-indutivo_typedef rot;		/* < Variavel que será utilizada */
+indutivo_typedef vel;		/* < Variavel que será utilizada */
 
-void rot_Init(void);
-void rot_Reset(void);
-void rot_Calc(void);
+void vel_Init(void);
+void vel_Reset(void);
+void vel_Calc(void);
 
-#endif /* INC_ROT_H_ */
+#endif /* INC_VEL_H_ */
