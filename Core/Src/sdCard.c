@@ -46,7 +46,7 @@ FRESULT SD_Init(void)
 	if (fresult != FR_OK)
 		return fresult;
 
-	bufclear(sdCard.buffer);
+	bufclear(&sdCard);
 
 	LDEBUG;
 	sdCard.longCounter = 0;
