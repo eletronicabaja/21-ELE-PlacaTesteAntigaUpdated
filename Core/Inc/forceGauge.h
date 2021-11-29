@@ -46,20 +46,17 @@
 #include "main.h"
 
 /*
- * 	@breif Define struct forceGauge
+ * 	@breif Define handle para a celula de carga
  */
-struct forceGauge
+typedef struct fGauge_Handle
 {
 	UART_HandleTypeDef *huart;	/*< Handle do UART a ser utilizado */
-
 	uint8_t rxbuffer[16];		/*< Buffer pra recepção UART */
-
 	int force;					/*< Variavel que armazena o valor lido */
-
 	HAL_StatusTypeDef result;	/*< Variavel que armazena retorno de erros das funções */
-}forceGauge;
+}fGauge_HandleTypeDef;
 
-void forceGauge_uart_Init_DMA(UART_HandleTypeDef *huart);
-void forceGauge_getForce(void);
+void forceGauge_uart_Init_DMA(fGauge_HandleTypeDef *hfGauge);
+void forceGauge_getForce(fGauge_HandleTypeDef *hfGauge);
 
 #endif /* INC_FORCEGAUGE_H_ */

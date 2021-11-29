@@ -5,6 +5,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/dina.c \
 ../Core/Src/fatfs_sd.c \
 ../Core/Src/forceGauge.c \
 ../Core/Src/indutivo.c \
@@ -19,6 +20,7 @@ C_SRCS += \
 ../Core/Src/vel.c 
 
 OBJS += \
+./Core/Src/dina.o \
 ./Core/Src/fatfs_sd.o \
 ./Core/Src/forceGauge.o \
 ./Core/Src/indutivo.o \
@@ -33,6 +35,7 @@ OBJS += \
 ./Core/Src/vel.o 
 
 C_DEPS += \
+./Core/Src/dina.d \
 ./Core/Src/fatfs_sd.d \
 ./Core/Src/forceGauge.d \
 ./Core/Src/indutivo.d \

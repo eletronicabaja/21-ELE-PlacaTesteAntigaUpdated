@@ -23,9 +23,9 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include  "rot.h"
+#include "rot.h"
 #include "vel.h"
-#include "forceGauge.h"
+#include "dina.h"
 #include "sdCard.h"
 /* USER CODE END Includes */
 
@@ -320,6 +320,8 @@ void TIM3_IRQHandler(void)
 void TIM4_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM4_IRQn 0 */
+	if (sdCard.mode == 1)
+		dina_Update();
 	fresult = SD_logger();
   /* USER CODE END TIM4_IRQn 0 */
   HAL_TIM_IRQHandler(&htim4);

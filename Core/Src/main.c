@@ -24,10 +24,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "sdCard.h"
-#include "indutivo.h"
 #include "rot.h"
-#include "forceGauge.h"
 #include "vel.h"
+#include "dina.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -135,7 +134,7 @@ int main(void)
   else if (sdCard.mode == 1)
   {
 	  rot_Init();
-	  forceGauge_uart_Init_DMA(&huart2);
+	  dina_Init();
   }
 
   /* USER CODE END 2 */
@@ -144,7 +143,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  forceGauge_getForce();
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

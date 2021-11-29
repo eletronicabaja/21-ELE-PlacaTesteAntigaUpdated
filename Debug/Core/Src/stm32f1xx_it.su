@@ -15,5 +15,5 @@ stm32f1xx_it.c:274:6:TIM1_CC_IRQHandler	8	static
 stm32f1xx_it.c:289:6:TIM2_IRQHandler	8	static
 stm32f1xx_it.c:306:6:TIM3_IRQHandler	8	static
 stm32f1xx_it.c:320:6:TIM4_IRQHandler	8	static
-stm32f1xx_it.c:334:6:SPI1_IRQHandler	8	static
-stm32f1xx_it.c:348:6:USART2_IRQHandler	8	static
+stm32f1xx_it.c:336:6:SPI1_IRQHandler	8	static
+stm32f1xx_it.c:350:6:USART2_IRQHandler	8	static

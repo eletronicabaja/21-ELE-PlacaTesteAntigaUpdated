@@ -6,7 +6,7 @@
 
 #include "rot.h"
 #include "vel.h"
-#include "forceGauge.h"
+#include "dina.h"
 
 /*
  * 	Função para calcular tamanho de um buffer
@@ -233,7 +233,7 @@ FRESULT SD_logger(void)
 					"%04d%04d"
 					"%04d"
 					"\n",
-					rot.value, forceGauge.force,
+					rot.value, dina.force,
 					sdCard.counter);
 	}
 
