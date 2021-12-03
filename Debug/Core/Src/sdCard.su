@@ -3,7 +3,7 @@ sdCard.c:25:6:bufclear	24	static
 sdCard.c:34:9:SD_Init	8	static
 sdCard.c:66:9:SD_loadSettings	8	static
 sdCard.c:86:9:SD_createSettings	16	static
-sdCard.c:118:9:SD_searchSettings	24	static
-sdCard.c:159:9:SD_createFile	16	static
-sdCard.c:189:9:SD_write	16	static
-sdCard.c:215:9:SD_logger	24	static
+sdCard.c:119:9:SD_searchSettings	24	static
+sdCard.c:160:9:SD_createFile	16	static
+sdCard.c:190:9:SD_write	16	static
+sdCard.c:216:9:SD_logger	24	static

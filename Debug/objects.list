@@ -1,3 +1,4 @@
+"./Core/Src/ace_gir.o"
 "./Core/Src/dina.o"
 "./Core/Src/fatfs_sd.o"
 "./Core/Src/forceGauge.o"

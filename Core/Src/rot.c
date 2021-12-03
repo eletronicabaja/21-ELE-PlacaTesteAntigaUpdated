@@ -14,7 +14,7 @@ void rot_Init(void)
 {
 	rot.constante = 0.6;			/* < Salva a constante para calculo da rotação do motor */
 	rot.htim = &htim1;				/* < Salva o ponteiro do Timer que será utilizado */
-	rot.channel = TIM_CHANNEL_2;	/* < Salva o channel a ser utilizado */
+	rot.channel = TIM_CHANNEL_1;	/* < Salva o channel a ser utilizado */
 
 	indutivo_Init(&rot);			/* < Chama função de inicialização */
 }
