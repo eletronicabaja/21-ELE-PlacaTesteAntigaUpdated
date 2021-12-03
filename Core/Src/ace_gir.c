@@ -7,43 +7,61 @@
 
 #include "ace_gir.h"
 
-void aceGir_Init(I2C_HandleTypeDef *htim)
+HAL_StatusTypeDef aceGir_Init(I2C_HandleTypeDef *hi2c)
 {
 
-	aceGir.hi2c = htim;
+	aceGir.hi2c = hi2c;
 
+	HAL_StatusTypeDef result;
 	uint8_t check;
 	uint8_t dados;
 
 	// checar se o módulo está conectado
-	HAL_I2C_Mem_Read (aceGir.hi2c, MPU6050_ADDR,WHO_AM_I_REG,1, &check, 1, 1000);
+	result = HAL_I2C_Mem_Read (aceGir.hi2c, MPU6050_ADDR,WHO_AM_I_REG,1, &check, 1, 1000);
+	if (result != HAL_OK)
+		return result;
 
 	if (check == 104)  // 0x68 = 104 -> será retornado seu o modulo estiver OK
 	{
 		// ligar sensor
 		dados = 0;
-		HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, PWR_MGMT_1_REG, 1,&dados, 1, 1000);
+		result = HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, PWR_MGMT_1_REG, 1,&dados, 1, 1000);
+		if (result != HAL_OK)
+			return result;
 
 		// definir frequencia de 1khz
 		dados = 0x07;
-		HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &dados, 1, 1000);
+		result = HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &dados, 1, 1000);
+		if (result != HAL_OK)
+			return result;
 
 		// definir configuracao de acelerometro
 		dados = 0x00;
-		HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &dados, 1, 1000);
+		result = HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &dados, 1, 1000);
+		if (result != HAL_OK)
+			return result;
 
 		// definir configuracao de giroscopio
 		dados = 0x00;
-		HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &dados, 1, 1000);
+		result = HAL_I2C_Mem_Write(aceGir.hi2c, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &dados, 1, 1000);
+		if (result != HAL_OK)
+			return result;
 	}
+
+	result = HAL_TIM_Base_Start_IT(&htim4);
+
+	return result;
 }
 
-void aceGir_Read(void)
+HAL_StatusTypeDef aceGir_Read(void)
 {
+	HAL_StatusTypeDef result;
 	uint8_t buf[6];
 
 	/*	Leitura do Acelerometro	*/
-	HAL_I2C_Mem_Read (aceGir.hi2c, MPU6050_ADDR, ACCEL_XOUT_H_REG, 1, buf, 6, 1000);
+	result = HAL_I2C_Mem_Read (aceGir.hi2c, MPU6050_ADDR, ACCEL_XOUT_H_REG, 1, buf, 6, 1000);
+	if (result != HAL_OK)
+		return result;
 
 	aceGir.Accel_X_RAW = (int16_t)(buf[0] << 8 | buf [1]);
 	aceGir.Accel_Y_RAW = (int16_t)(buf[2] << 8 | buf [3]);
@@ -55,7 +73,9 @@ void aceGir_Read(void)
 	aceGir.Az = aceGir.Accel_Z_RAW/16384.0;
 
 	/*	Leitura do Giroscopio	*/
-	HAL_I2C_Mem_Read (aceGir.hi2c, MPU6050_ADDR, GYRO_XOUT_H_REG, 1, buf, 6, 1000);
+	result = HAL_I2C_Mem_Read (aceGir.hi2c, MPU6050_ADDR, GYRO_XOUT_H_REG, 1, buf, 6, 1000);
+	if (result != HAL_OK)
+		return result;
 
 	aceGir.Gyro_X_RAW = (int16_t)(buf[0] << 8 | buf [1]);
 	aceGir.Gyro_Y_RAW = (int16_t)(buf[2] << 8 | buf [3]);
@@ -65,4 +85,6 @@ void aceGir_Read(void)
 	aceGir.Gx = aceGir.Gyro_X_RAW/131.0;
 	aceGir.Gy = aceGir.Gyro_Y_RAW/131.0;
 	aceGir.Gz = aceGir.Gyro_Z_RAW/131.0;
+
+	return result;
 }

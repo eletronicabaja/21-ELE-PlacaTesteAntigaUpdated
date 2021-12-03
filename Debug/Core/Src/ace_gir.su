@@ -1,2 +1,2 @@
-ace_gir.c:10:6:aceGir_Init	32	static
-ace_gir.c:38:6:aceGir_Read	32	static
+ace_gir.c:10:19:aceGir_Init	40	static
+ace_gir.c:56:19:aceGir_Read	32	static

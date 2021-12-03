@@ -95,9 +95,9 @@ FRESULT SD_createSettings(void)
 
 	len = sprintf(sdCard.longBuffer,
 			";Seleciona o Modo de operação da Placa\n"
-			";Mode 0 para teste de AV do 19 (Padrão)"
-			";Mode 1 para Teste de Dinamometro"
-			";Mode 9 para captar e enviar dodos ao datalogger do 20"
+			";Mode 0 para teste de AV do 19 (Padrão)\n"
+			";Mode 1 para Teste de Dinamometro\n"
+			";Mode 9 para captar e enviar dodos ao datalogger do 20 (Padrão se SD ausente)\n"
 			"MODE=0\n");
 
 	fresult = f_write(&sdCard.fil, sdCard.longBuffer, len, &sdCard.bw);

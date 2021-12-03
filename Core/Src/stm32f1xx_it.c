@@ -27,6 +27,7 @@
 #include "vel.h"
 #include "dina.h"
 #include "sdCard.h"
+#include "ace_gir.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -323,7 +324,10 @@ void TIM4_IRQHandler(void)
   /* USER CODE BEGIN TIM4_IRQn 0 */
 	if (sdCard.mode == 1)
 		dina_Update();
-	fresult = SD_logger();
+	if (sdCard.mode != 9)
+		fresult = SD_logger();
+	else
+		aceGir_Read();
   /* USER CODE END TIM4_IRQn 0 */
   HAL_TIM_IRQHandler(&htim4);
   /* USER CODE BEGIN TIM4_IRQn 1 */

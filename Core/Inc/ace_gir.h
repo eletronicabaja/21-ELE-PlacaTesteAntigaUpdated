@@ -20,6 +20,8 @@
 #define PWR_MGMT_1_REG 0x6B
 #define WHO_AM_I_REG 0x75
 
+TIM_HandleTypeDef htim4;
+
 struct aceGir_Handle
 {
 	I2C_HandleTypeDef *hi2c;
@@ -32,7 +34,7 @@ struct aceGir_Handle
 	float Ax, Ay, Az, Gx, Gy, Gz;
 }aceGir;
 
-void aceGir_Init(void);
-void aceGir_Read(void);
+HAL_StatusTypeDef aceGir_Init(I2C_HandleTypeDef *htim);
+HAL_StatusTypeDef aceGir_Read(void);
 
 #endif /* INC_ACE_GIR_H_ */
