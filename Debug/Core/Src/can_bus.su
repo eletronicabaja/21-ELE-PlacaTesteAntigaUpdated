@@ -1,0 +1,2 @@
+can_bus.c:11:6:can_bus_Init	8	static
+can_bus.c:34:6:can_bus_Send	8	static

@@ -63,28 +63,30 @@ HAL_StatusTypeDef aceGir_Read(void)
 	if (result != HAL_OK)
 		return result;
 
-	aceGir.Accel_X_RAW = (int16_t)(buf[0] << 8 | buf [1]);
-	aceGir.Accel_Y_RAW = (int16_t)(buf[2] << 8 | buf [3]);
-	aceGir.Accel_Z_RAW = (int16_t)(buf[4] << 8 | buf [5]);
+	aceGir.accel.X_RAW = (int16_t)(buf[0] << 8 | buf [1]);
+	aceGir.accel.Y_RAW = (int16_t)(buf[2] << 8 | buf [3]);
+	aceGir.accel.Z_RAW = (int16_t)(buf[4] << 8 | buf [5]);
 
 	//converter valores em 'g', dividindo por 16384 (FS_SEL)=0
-	aceGir.Ax = aceGir.Accel_X_RAW/16384.0;
-	aceGir.Ay = aceGir.Accel_Y_RAW/16384.0;
-	aceGir.Az = aceGir.Accel_Z_RAW/16384.0;
+	aceGir.accel.x = aceGir.accel.X_RAW/16384.0;
+	aceGir.accel.y = aceGir.accel.Y_RAW/16384.0;
+	aceGir.accel.z = aceGir.accel.Z_RAW/16384.0;
 
 	/*	Leitura do Giroscopio	*/
 	result = HAL_I2C_Mem_Read (aceGir.hi2c, MPU6050_ADDR, GYRO_XOUT_H_REG, 1, buf, 6, 1000);
 	if (result != HAL_OK)
 		return result;
 
-	aceGir.Gyro_X_RAW = (int16_t)(buf[0] << 8 | buf [1]);
-	aceGir.Gyro_Y_RAW = (int16_t)(buf[2] << 8 | buf [3]);
-	aceGir.Gyro_Z_RAW = (int16_t)(buf[4] << 8 | buf [5]);
+	aceGir.gyro.X_RAW = (int16_t)(buf[0] << 8 | buf [1]);
+	aceGir.gyro.Y_RAW = (int16_t)(buf[2] << 8 | buf [3]);
+	aceGir.gyro.Z_RAW = (int16_t)(buf[4] << 8 | buf [5]);
 
 	//converter valores em 'graus/segundo', dividindo por 131 (FS_SEL)=0
-	aceGir.Gx = aceGir.Gyro_X_RAW/131.0;
-	aceGir.Gy = aceGir.Gyro_Y_RAW/131.0;
-	aceGir.Gz = aceGir.Gyro_Z_RAW/131.0;
+	aceGir.gyro.x = aceGir.gyro.X_RAW/131.0;
+	aceGir.gyro.y = aceGir.gyro.Y_RAW/131.0;
+	aceGir.gyro.z = aceGir.gyro.Z_RAW/131.0;
+
+
 
 	return result;
 }

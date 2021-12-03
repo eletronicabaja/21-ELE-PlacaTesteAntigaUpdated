@@ -22,16 +22,19 @@
 
 TIM_HandleTypeDef htim4;
 
+typedef struct axis_Handle
+{
+	int16_t X_RAW;
+	int16_t Y_RAW;
+	int16_t Z_RAW;
+	float x,y,z;
+}axis_HandleTypedef;
+
 struct aceGir_Handle
 {
 	I2C_HandleTypeDef *hi2c;
-	int16_t Accel_X_RAW;
-	int16_t Accel_Y_RAW;
-	int16_t Accel_Z_RAW;
-	int16_t Gyro_X_RAW;
-	int16_t Gyro_Y_RAW;
-	int16_t Gyro_Z_RAW;
-	float Ax, Ay, Az, Gx, Gy, Gz;
+	axis_HandleTypedef accel;
+	axis_HandleTypedef gyro;
 }aceGir;
 
 HAL_StatusTypeDef aceGir_Init(I2C_HandleTypeDef *htim);
