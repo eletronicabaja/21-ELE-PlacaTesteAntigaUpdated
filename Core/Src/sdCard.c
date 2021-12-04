@@ -7,6 +7,8 @@
 #include "rot.h"
 #include "vel.h"
 #include "dina.h"
+#include "can_bus.h"
+#include "ace_gir.h"
 
 /*
  * 	Função para calcular tamanho de um buffer
@@ -97,7 +99,7 @@ FRESULT SD_createSettings(void)
 			";Seleciona o Modo de operação da Placa\n"
 			";Mode 0 para teste de AV do 19 (Padrão)\n"
 			";Mode 1 para Teste de Dinamometro\n"
-			";Mode 9 para captar e enviar dodos ao datalogger do 20 (Padrão se SD ausente)\n"
+			";Mode 2 testes com o MPU6050 no 20\n"
 			"MODE=0\n");
 
 	fresult = f_write(&sdCard.fil, sdCard.longBuffer, len, &sdCard.bw);
@@ -235,6 +237,21 @@ FRESULT SD_logger(void)
 					"%04d"
 					"\n",
 					rot.value, dina.force,
+					sdCard.counter);
+	case 2:
+			sdCard.blen = sprintf(sdCard.buffer,
+					"%04d%04d"
+					"%05d%05d%05d"
+					"%05d%05d%05d"
+					"%04d"
+					"\n",
+					canBus.rx.rpm, canBus.rx.vel,
+					((uint16_t)(aceGir.accel.X_RAW+32768)),
+					((uint16_t)(aceGir.accel.Y_RAW+32768)),
+					((uint16_t)(aceGir.accel.Z_RAW+32768)),
+					((uint16_t)(aceGir.gyro.X_RAW+32768)),
+					((uint16_t)(aceGir.gyro.Y_RAW+32768)),
+					((uint16_t)(aceGir.gyro.Z_RAW+32768)),
 					sdCard.counter);
 	}
 

@@ -144,7 +144,7 @@ int main(void)
 	  rot_Init();
 	  dina_Init();
 	}
-	else if (sdCard.mode == 9)
+	else if (sdCard.mode == 2)
 	{
 		aceGir_Init(&hi2c2);
 		can_bus_Init();

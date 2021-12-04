@@ -263,7 +263,7 @@ void DMA1_Channel5_IRQHandler(void)
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
   /* USER CODE BEGIN USB_LP_CAN1_RX0_IRQn 0 */
-
+	can_bus_Recieve();
   /* USER CODE END USB_LP_CAN1_RX0_IRQn 0 */
   HAL_CAN_IRQHandler(&hcan);
   /* USER CODE BEGIN USB_LP_CAN1_RX0_IRQn 1 */
@@ -340,13 +340,12 @@ void TIM4_IRQHandler(void)
   /* USER CODE BEGIN TIM4_IRQn 0 */
 	if (sdCard.mode == 1)
 		dina_Update();
-	if (sdCard.mode != 9)
-		fresult = SD_logger();
-	else
+	if (sdCard.mode == 2)
 	{
 		aceGir_Read();
-		can_bus_Send();
 	}
+	if (sdCard.mode != 9)
+		fresult = SD_logger();
   /* USER CODE END TIM4_IRQn 0 */
   HAL_TIM_IRQHandler(&htim4);
   /* USER CODE BEGIN TIM4_IRQn 1 */

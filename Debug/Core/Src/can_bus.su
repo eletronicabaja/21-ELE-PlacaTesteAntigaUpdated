@@ -1,2 +1,3 @@
-can_bus.c:11:6:can_bus_Init	8	static
-can_bus.c:34:6:can_bus_Send	8	static
+can_bus.c:11:6:can_bus_Init	16	static
+can_bus.c:32:6:can_bus_Send	8	static
+can_bus.c:67:6:can_bus_Recieve	8	static

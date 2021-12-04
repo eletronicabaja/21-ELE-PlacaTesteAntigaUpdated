@@ -36,7 +36,8 @@ Core/Src/sdCard.o: ../Core/Src/sdCard.c ../Core/Inc/sdCard.h \
  ../Middlewares/Third_Party/FatFs/src/diskio.h \
  ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/user_diskio.h \
  ../Core/Inc/rot.h ../Core/Inc/indutivo.h ../Core/Inc/vel.h \
- ../Core/Inc/dina.h ../Core/Inc/forceGauge.h
+ ../Core/Inc/dina.h ../Core/Inc/forceGauge.h ../Core/Inc/can_bus.h \
+ ../Core/Inc/ace_gir.h
 
 ../Core/Inc/sdCard.h:
 
@@ -131,3 +132,7 @@ Core/Src/sdCard.o: ../Core/Src/sdCard.c ../Core/Inc/sdCard.h \
 ../Core/Inc/dina.h:
 
 ../Core/Inc/forceGauge.h:
+
+../Core/Inc/can_bus.h:
+
+../Core/Inc/ace_gir.h:
