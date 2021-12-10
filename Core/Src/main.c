@@ -141,13 +141,14 @@ int main(void)
 	}
 	else if (sdCard.mode == 1)
 	{
-	  rot_Init();
-	  dina_Init();
+		dina_Init();
+		rot_Init();
 	}
 	else if (sdCard.mode == 2)
 	{
-		aceGir_Init(&hi2c2);
 		can_bus_Init();
+		aceGir_Init(&hi2c2);
+		ADC_DMA_Init();
 	}
 
   /* USER CODE END 2 */
@@ -278,10 +279,10 @@ static void MX_CAN_Init(void)
 
   /* USER CODE END CAN_Init 1 */
   hcan.Instance = CAN1;
-  hcan.Init.Prescaler = 16;
+  hcan.Init.Prescaler = 18;
   hcan.Init.Mode = CAN_MODE_NORMAL;
   hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan.Init.TimeSeg1 = CAN_BS1_1TQ;
+  hcan.Init.TimeSeg1 = CAN_BS1_2TQ;
   hcan.Init.TimeSeg2 = CAN_BS2_1TQ;
   hcan.Init.TimeTriggeredMode = DISABLE;
   hcan.Init.AutoBusOff = DISABLE;
@@ -594,7 +595,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;

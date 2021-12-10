@@ -33,4 +33,5 @@ void rot_Reset(void)
 void rot_Calc(void)
 {
 	indutivo_calc(&rot);
+	//LDEBUG;
 }

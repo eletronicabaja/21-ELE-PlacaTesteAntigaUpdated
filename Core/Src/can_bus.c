@@ -11,16 +11,16 @@
 void can_bus_Init(void)
 {
 	HAL_StatusTypeDef result;
-	canBus.tx_header.DLC = 1;
+	canBus.tx_header.DLC = 8;
 	canBus.tx_header.IDE = CAN_ID_STD;
 	canBus.tx_header.RTR = CAN_RTR_DATA;
 	canBus.tx_header.StdId = 0x010;
 	canBus.filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
 	canBus.filter.FilterMode = CAN_FILTERMODE_IDMASK;
 	canBus.filter.FilterBank = 0;
-	canBus.filter.FilterIdHigh = 0x240 << 5;
-	canBus.filter.FilterIdLow = 0;
-	canBus.filter.FilterMaskIdHigh = 0x7fc<<5;
+	canBus.filter.FilterIdHigh = 0x249 << 5;
+	canBus.filter.FilterIdLow = 0x240 << 5;
+	canBus.filter.FilterMaskIdHigh = 0x200 << 5;
 	canBus.filter.FilterMaskIdLow = 0;
 	canBus.filter.FilterScale = CAN_FILTERSCALE_32BIT;
 	canBus.filter.FilterActivation = ENABLE;

@@ -13,6 +13,7 @@
  */
 void forceGauge_uart_Init_DMA(fGauge_HandleTypeDef *hfGauge)
 {
+	//hfGauge->result = HAL_UART_Init(hfGauge->huart);
 	hfGauge->result = HAL_UART_Receive_DMA(hfGauge->huart, hfGauge->rxbuffer, 16);
 }
 
