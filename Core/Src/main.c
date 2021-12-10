@@ -29,6 +29,7 @@
 #include "dina.h"
 #include "ace_gir.h"
 #include "can_bus.h"
+#include "ADC_DMA.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

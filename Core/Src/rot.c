@@ -16,7 +16,7 @@ void rot_Init(void)
 	rot.htim = &htim1;				/* < Salva o ponteiro do Timer que será utilizado */
 	rot.channel = TIM_CHANNEL_1;	/* < Salva o channel a ser utilizado */
 
-	indutivo_Init(&rot);			/* < Chama função de inicialização */
+    	indutivo_Init(&rot);			/* < Chama função de inicialização */
 }
 
 /*
