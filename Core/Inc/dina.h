@@ -10,7 +10,7 @@
 
 #include "forceGauge.h"
 
-UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
 
 fGauge_HandleTypeDef dina;
 

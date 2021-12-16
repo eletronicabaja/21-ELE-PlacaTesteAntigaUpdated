@@ -9,7 +9,7 @@
 
 void dina_Init(void)
 {
-	dina.huart = &huart1;
+	dina.huart = &huart2;
 	forceGauge_uart_Init_DMA(&dina);
 }
 

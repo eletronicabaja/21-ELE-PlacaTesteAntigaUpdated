@@ -10,6 +10,7 @@
 #include "can_bus.h"
 #include "ace_gir.h"
 #include "ADC_DMA.h"
+#include "traction.h"
 
 /*
  * 	Função para calcular tamanho de um buffer
@@ -255,6 +256,16 @@ FRESULT SD_logger(void)
 					((uint16_t)(aceGir.gyro.Y_RAW+32768)),
 					((uint16_t)(aceGir.gyro.Z_RAW+32768)),
 					analog.buffer[0], analog.buffer[1],
+					sdCard.counter);
+
+	else if (sdCard.mode == 3)
+			sdCard.blen = sprintf(sdCard.buffer,
+					"%04d%04d"
+					"%04d%04d"
+					"%04d"
+					"\n",
+					canBus.rx.rpm, canBus.rx.vel,
+					traction.cell1.force, traction.cell2.force,
 					sdCard.counter);
 
 	for (int i = 0; i < sdCard.blen; i++)
