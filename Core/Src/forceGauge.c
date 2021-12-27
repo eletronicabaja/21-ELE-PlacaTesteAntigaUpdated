@@ -13,7 +13,6 @@
  */
 void forceGauge_uart_Init_DMA(fGauge_HandleTypeDef *hfGauge)
 {
-	//hfGauge->result = HAL_UART_Init(hfGauge->huart);
 	hfGauge->result = HAL_UART_Receive_DMA(hfGauge->huart, hfGauge->rxbuffer, 16);
 }
 
@@ -28,7 +27,6 @@ void forceGauge_getForce(fGauge_HandleTypeDef *hfGauge)
 	/*	Logica para reiniciar a leitura	*/
 	if (hfGauge->huart->hdmatx->State != HAL_DMA_STATE_BUSY)
 		hfGauge->result = HAL_UART_Receive_DMA(hfGauge->huart, hfGauge->rxbuffer, 16);
-	//hfGauge->result = HAL_UART_Receive(hfGauge->huart, hfGauge->rxbuffer, 16, 10000);
 
 	/*	Conversão string to int	*/
 	if (hfGauge->rxbuffer[14] >=48 && hfGauge->rxbuffer[14] <= 57)
