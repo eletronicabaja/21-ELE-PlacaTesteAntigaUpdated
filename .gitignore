@@ -1,1 +1,7 @@
 desktop.ini
+*.elf
+*.o
+*.bin
+*.list
+*.d
+*.su

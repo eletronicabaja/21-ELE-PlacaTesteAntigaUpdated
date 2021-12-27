@@ -74,6 +74,12 @@ void can_bus_Recieve(void)
 		canBus.rx.vel = (canBus.recieve[3] << 8) + canBus.recieve[2];
 		canBus.rx.rpm = (canBus.recieve[5] << 8) + canBus.recieve[4];
 		canBus.rx.counter = (canBus.recieve[7] << 8) + canBus.recieve[6];
+
+		if (canBus.rx.vel > 9999)
+			canBus.rx.vel = 9999;
+
+		if (canBus.rx.rpm > 9999)
+			canBus.rx.rpm = 9999;
 	}
 
 	/*if (canBus.rx_header.StdId == 0x244)

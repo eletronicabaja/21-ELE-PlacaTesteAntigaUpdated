@@ -29,6 +29,7 @@
 #include "sdCard.h"
 #include "ace_gir.h"
 #include "can_bus.h"
+#include "traction.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -356,6 +357,8 @@ void TIM4_IRQHandler(void)
   /* USER CODE BEGIN TIM4_IRQn 0 */
 	if (sdCard.mode == 1)
 		dina_Update();
+	if (sdCard.mode == 3)
+		traction_Update();
 	if (sdCard.mode == 2)
 	{
 		aceGir_Read();

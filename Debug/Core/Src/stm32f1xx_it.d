@@ -37,7 +37,7 @@ Core/Src/stm32f1xx_it.o: ../Core/Src/stm32f1xx_it.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h \
  ../Middlewares/Third_Party/FatFs/src/diskio.h \
  ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/user_diskio.h \
- ../Core/Inc/ace_gir.h ../Core/Inc/can_bus.h
+ ../Core/Inc/ace_gir.h ../Core/Inc/can_bus.h ../Core/Inc/traction.h
 
 ../Core/Inc/main.h:
 
@@ -138,3 +138,5 @@ Core/Src/stm32f1xx_it.o: ../Core/Src/stm32f1xx_it.c ../Core/Inc/main.h \
 ../Core/Inc/ace_gir.h:
 
 ../Core/Inc/can_bus.h:
+
+../Core/Inc/traction.h:
