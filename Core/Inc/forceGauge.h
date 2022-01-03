@@ -58,5 +58,6 @@ typedef struct fGauge_Handle
 
 void forceGauge_uart_Init_DMA(fGauge_HandleTypeDef *hfGauge);
 void forceGauge_getForce(fGauge_HandleTypeDef *hfGauge);
+double pow10(double y);
 
 #endif /* INC_FORCEGAUGE_H_ */

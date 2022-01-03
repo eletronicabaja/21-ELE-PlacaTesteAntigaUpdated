@@ -1,2 +1,3 @@
 forceGauge.c:14:6:forceGauge_uart_Init_DMA	16	static
-forceGauge.c:23:6:forceGauge_getForce	24	static
+forceGauge.c:23:6:forceGauge_getForce	40	static
+forceGauge.c:56:8:pow10	24	static
