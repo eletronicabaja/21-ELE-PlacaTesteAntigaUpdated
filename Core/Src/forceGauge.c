@@ -26,7 +26,7 @@ void forceGauge_getForce(fGauge_HandleTypeDef *hfGauge)
 	int i = 0, j = 7;
 
 	/*	Logica para reiniciar a leitura	*/
-	if (hfGauge->huart->hdmatx->State != HAL_DMA_STATE_BUSY)
+	if (hfGauge->huart->hdmarx->State != HAL_DMA_STATE_BUSY)
 		hfGauge->result = HAL_UART_Receive_DMA(hfGauge->huart, hfGauge->rxbuffer, 16);
 
 	/*	Conversão string to int	*/

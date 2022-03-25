@@ -59,8 +59,6 @@ FRESULT SD_Init(void)
 	sdCard.counter = 0;
 	sdCard.timer = 0;
 
-	HAL_TIM_Base_Start_IT(&htim4);
-
 	return fresult;
 }
 
@@ -102,6 +100,7 @@ FRESULT SD_createSettings(void)
 			";Mode 0 para teste de AV do 19 (Padrão)\n"
 			";Mode 1 para Teste de Dinamometro\n"
 			";Mode 2 testes com o MPU6050 no 20\n"
+			";Mode 3 teste de tração\n"
 			"MODE=0\n");
 
 	fresult = f_write(&sdCard.fil, sdCard.longBuffer, len, &sdCard.bw);
@@ -224,7 +223,7 @@ FRESULT SD_logger(void)
 	else
 		sdCard.counter = 0;
 
-	if (sdCard.mode == 0)
+	if (sdCard.mode == 0 || sdCard.mode == 4)
 			sdCard.blen = sprintf(sdCard.buffer,
 					"%04d%04d"
 					"%04d"

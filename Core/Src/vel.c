@@ -12,7 +12,7 @@
  */
 void vel_Init(void)
 {
-	vel.constante = 1.5082;			/* < Salva a constante para calculo da velocidade */
+	vel.constante = 1.65179;			/* < Salva a constante para calculo da velocidade */
 	vel.htim = &htim2;				/* < Salva o ponteiro do Timer que será utilizado */
 	vel.channel = TIM_CHANNEL_1;	/* < Salva o channel a ser utilizado */
 

@@ -11,21 +11,26 @@
 void can_bus_Init(void)
 {
 	HAL_StatusTypeDef result;
-	canBus.tx_header.DLC = 8;
-	canBus.tx_header.IDE = CAN_ID_STD;
-	canBus.tx_header.RTR = CAN_RTR_DATA;
-	canBus.tx_header.StdId = 0x010;
-	canBus.filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
-	canBus.filter.FilterMode = CAN_FILTERMODE_IDMASK;
-	canBus.filter.FilterBank = 0;
-	canBus.filter.FilterIdHigh = 0x249 << 5;
-	canBus.filter.FilterIdLow = 0x240 << 5;
-	canBus.filter.FilterMaskIdHigh = 0x200 << 5;
-	canBus.filter.FilterMaskIdLow = 0;
-	canBus.filter.FilterScale = CAN_FILTERSCALE_32BIT;
-	canBus.filter.FilterActivation = ENABLE;
-	result = HAL_CAN_ConfigFilter(&hcan, &canBus.filter);
+
+	canBus.tx_header.StdId = 				0x000;						//Id Padrão (11Bit)
+	canBus.tx_header.ExtId = 				0x000;						//Id Extendido (29Bit, STDID+18)
+	canBus.tx_header.IDE = 					CAN_ID_STD;					//Define se está usando id padrão (CAN_ID_STD) ou estendido (CAN_ID_EXT)
+	canBus.tx_header.RTR = 					CAN_RTR_DATA;
+	canBus.tx_header.DLC = 					1;							//Quantidade de bytes por mensagem (1 a 8)
+	canBus.tx_header.TransmitGlobalTime =	DISABLE;
+
+	canBus.filter.FilterIdHigh = 			0x010 << 5;
+	canBus.filter.FilterIdLow = 			0x000 << 5;
+	canBus.filter.FilterMaskIdHigh = 		0x7F0 << 5;
+	canBus.filter.FilterMaskIdLow = 		0x000 << 5;
+	canBus.filter.FilterFIFOAssignment = 	CAN_FILTER_FIFO0;
+	canBus.filter.FilterBank = 				0;
+	canBus.filter.FilterMode = 				CAN_FILTERMODE_IDMASK;
+	canBus.filter.FilterScale = 			CAN_FILTERSCALE_32BIT;
+	canBus.filter.FilterActivation = 		ENABLE;
+
 	result = HAL_CAN_Start(&hcan);
+	result = HAL_CAN_ConfigFilter(&hcan, &canBus.filter);
 	result = HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
@@ -68,12 +73,11 @@ void can_bus_Recieve(void)
 {
 	HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &canBus.rx_header, canBus.recieve);
 
-	if (canBus.rx_header.StdId == 0x242)
+	if (canBus.rx_header.StdId == 0x010)
 	{
-		canBus.rx.fuel = (canBus.recieve[1] << 8) + canBus.recieve[0];
-		canBus.rx.vel = (canBus.recieve[3] << 8) + canBus.recieve[2];
-		canBus.rx.rpm = (canBus.recieve[5] << 8) + canBus.recieve[4];
-		canBus.rx.counter = (canBus.recieve[7] << 8) + canBus.recieve[6];
+		canBus.rx.fuel = (canBus.recieve[4] << 8) + canBus.recieve[5];
+		canBus.rx.vel = (canBus.recieve[2] << 8) + canBus.recieve[3];
+		canBus.rx.rpm = (canBus.recieve[0] << 8) + canBus.recieve[1];
 
 		if (canBus.rx.vel > 9999)
 			canBus.rx.vel = 9999;

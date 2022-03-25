@@ -159,8 +159,15 @@ int main(void)
 	else if (sdCard.mode == 3)
 	{
 		traction_Init();
+		rot_Init();
+		vel_Init();
+	}
+	else if (sdCard.mode == 4)
+	{
 		can_bus_Init();
 	}
+
+	HAL_TIM_Base_Start_IT(&htim4);
 
   /* USER CODE END 2 */
 
