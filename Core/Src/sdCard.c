@@ -263,7 +263,7 @@ FRESULT SD_logger(void)
 					"%04d%04d"
 					"%04d"
 					"\n",
-					canBus.rx.rpm, canBus.rx.vel,
+					rot.value, vel.value,
 					traction.cell1.force, traction.cell2.force,
 					sdCard.counter);
 
